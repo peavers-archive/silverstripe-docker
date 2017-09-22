@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  php:
+    container_name: php.development
+    image: peavers/silverstripe-docker
+    volumes:
+      - $PWD:/var/www/html
+    ports:
+      -   80:80
