@@ -21,8 +21,3 @@ chgrp www-data /var/www/ && \
 chgrp www-data -R /var/www/ && \
 chmod g+rwxs -R /var/www/
 ```
-
-## Docker Compose (Recommended)
-Ideally you're using docker-compose, copy and paste the `docker-compose.yml` 
-into your server base and run `docker-compose up` and you should be up 
-and running with `Maraidb` backend.
