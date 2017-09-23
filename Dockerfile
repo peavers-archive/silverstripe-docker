@@ -8,6 +8,7 @@ ENV DEBIAN_FRONTEND noninteractive
 # Install packages
 RUN apt-get update && \
     apt-get install -y  \
+    git \
     sudo \
     php \
     libapache2-mod-php \
