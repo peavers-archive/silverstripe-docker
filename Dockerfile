@@ -34,9 +34,6 @@ RUN phpenmod mcrypt
 # Install Composer
 RUN cd /tmp && curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
-# Cleanup
-RUN rm -rf /var/lib/apt/lists/*
-
 # Settings
 RUN echo "ServerName localhost" > /etc/apache2/conf-available/fqdn.conf && \
     echo "memory_limit=512M" > /etc/php/7.0/apache2/conf.d/memory-limit.ini && \
@@ -46,6 +43,10 @@ RUN echo "ServerName localhost" > /etc/apache2/conf-available/fqdn.conf && \
 	usermod -u 1000 www-data && \
 	usermod -G staff www-data
 
+# Setup permissions for www-data
 RUN chgrp www-data /var/www/ && \
     chgrp www-data -R /var/www/ && \
     chmod g+rwxs -R /var/www/
+
+# Cleanup
+RUN rm -rf /var/lib/apt/lists/*
