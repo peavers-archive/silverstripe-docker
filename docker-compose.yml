@@ -8,3 +8,13 @@ services:
       - $PWD:/var/www/html
     ports:
       -   80:80
+    links:
+      - database
+
+  database:
+    container_name: database.development
+    image: 'mariadb:latest'
+    ports:
+      - '3306:3306'
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes

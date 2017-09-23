@@ -1,13 +1,28 @@
 # Silverstripe docker container
 Basic docker container for Silverstripe 4 with PHP 7. Does not include database;
 
-# Goals
+
+## Goals
 * Nothing but Docker installed on Developers machines
 * No missing dependencies for Silverstripe development
-* No configuration of php.ini file required by Developers
-
-# What this isn't
-* A security harderend environment to run a production site on.
-* A "out the box" ready to-go Silverstripe install. You'll still need to run composer etc 
+* No configuration required by Developers
 
 
+## What this isn't
+* A security hardened environment to run a production site on.
+* A "out the box" ready to-go Silverstripe install. You'll still need to run composer install etc 
+
+
+## Fixing permissions
+If you manage to break /var/www/* so www-data can't access, 
+copy and paste the following into the container:
+```bash
+chgrp www-data /var/www/ && \
+chgrp www-data -R /var/www/ && \
+chmod g+rwxs -R /var/www/
+```
+
+## Docker Compose (Recommended)
+Ideally you're using docker-compose, copy and paste the `docker-compose.yml` 
+into your server base and run `docker-compose up` and you should be up 
+and running with `Maraidb` backend.

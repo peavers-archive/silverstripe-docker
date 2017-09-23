@@ -37,33 +37,15 @@ RUN cd /tmp && curl -sS https://getcomposer.org/installer | php && mv composer.p
 # Cleanup
 RUN rm -rf /var/lib/apt/lists/*
 
-# Apache + xdebug configuration
-RUN { \
-                echo "<VirtualHost *:80>"; \
-                echo "  DocumentRoot /var/www/html"; \
-                echo "  LogLevel warn"; \
-                echo "  ErrorLog /var/log/apache2/error.log"; \
-                echo "  CustomLog /var/log/apache2/access.log combined"; \
-                echo "  ServerSignature Off"; \
-                echo "  <Directory /var/www/html>"; \
-                echo "    Options +FollowSymLinks"; \
-                echo "    Options -ExecCGI -Includes -Indexes"; \
-                echo "    AllowOverride all"; \
-                echo; \
-                echo "    Require all granted"; \
-                echo "  </Directory>"; \
-                echo "  <LocationMatch assets/>"; \
-                echo "    php_flag engine off"; \
-                echo "  </LocationMatch>"; \
-                echo; \
-                echo "  IncludeOptional sites-available/000-default.local*"; \
-                echo "</VirtualHost>"; \
-	} | tee /etc/apache2/sites-available/000-default.conf
-
 # Settings
 RUN echo "ServerName localhost" > /etc/apache2/conf-available/fqdn.conf && \
     echo "memory_limit=512M" > /etc/php/7.0/apache2/conf.d/memory-limit.ini && \
 	echo "date.timezone = Pacific/Auckland" > /etc/php/7.0/apache2/conf.d/timezone.ini && \
+	sed -i -e 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf && \
 	a2enmod rewrite expires remoteip cgid && \
 	usermod -u 1000 www-data && \
 	usermod -G staff www-data
+
+RUN chgrp www-data /var/www/ && \
+    chgrp www-data -R /var/www/ && \
+    chmod g+rwxs -R /var/www/
